@@ -1,12 +1,16 @@
-## Breast Cancer Analysis
+##Breast Cancer Analysis
 
-## Step 1: collecting data
-## We will use the Wisconsin Breast Cancer Diagnostic dataset, available from the 
-##UCI Machine Learning Repository at http://archive.ics.uci.edu/ml. 
-##This dataset was contributed by researchers from the University of Wisconsin
-##and contains measurements derived from digitized images of fine-needle aspirates of breast masses.
+## ......... Step 1: collecting data............................................
 
-## Step 2: Exploring and preparing the data ---- 
+
+#  I use the Wisconsin Breast Cancer Diagnostic dataset, available from the 
+#  UCI Machine Learning Repository at http://archive.ics.uci.edu/ml. 
+#  This dataset was contributed by researchers from the University of Wisconsin
+#  and contains measurements derived from digitized images of fine-needle 
+# aspirates of breast masses.
+
+
+## ......... Step 2: Exploring and preparing the data ..........................
 
 # import the CSV file
 wbcd <- read.csv("wisc_bc_data.csv", stringsAsFactors = FALSE)
@@ -46,7 +50,6 @@ wbcd_n <- as.data.frame(lapply(wbcd[2:31], normalize))
 # confirm that normalization worked
 summary(wbcd_n$area_mean)
 
-#STOP...................................
 
 # create training and test data
 wbcd_train <- wbcd_n[1:469, ]
@@ -60,7 +63,7 @@ table(wbcd_test_labels)
 wbcd_train_labels <- wbcd[1:469, 1]
 wbcd_test_labels <- wbcd[470:569, 1]
 
-## Step 3: Training a model on the data ----
+## ........ Step 3: Training a model on the data ...............................
 
 # load the "class" library
 library(class)
@@ -68,7 +71,8 @@ library(class)
 wbcd_test_pred <- knn(train = wbcd_train, test = wbcd_test,
                       cl = wbcd_train_labels, k = 21)
 
-## Step 4: Evaluating model performance --------------------------------
+
+## ........ Step 4: Evaluating model performance ...............................
 
 # load the "gmodels" library
 library(gmodels)
@@ -77,7 +81,8 @@ library(gmodels)
 CrossTable(x = wbcd_test_labels, y = wbcd_test_pred,
            prop.chisq = FALSE)
 
-## Step 5: Improving model performance ----
+
+## ....... Step 5: Improving model performance .................................
 
 # use the scale() function to z-score standardize a data frame
 wbcd_z <- as.data.frame(scale(wbcd[-1]))
@@ -92,7 +97,6 @@ wbcd_test <- wbcd_z[470:569, ]
 # re-classify test cases
 wbcd_test_pred <- knn(train = wbcd_train, test = wbcd_test,
                       cl = wbcd_train_labels, k = 21)
-getwd()
 
 # Create the cross tabulation of predicted vs. actual
 CrossTable(x = wbcd_test_labels, y = wbcd_test_pred,
